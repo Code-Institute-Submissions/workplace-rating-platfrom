@@ -30,52 +30,22 @@ def get_companies():
 
 #adding new reviews:
 
-#@app.route('/add_review', methods=["GET", "POST"])
-#def add_review():
-#    f = AddReviewForm()
-#    if f.validate_on_submit():
-#        review = {
-#            "review_title": f.review_title.data,
-#            "review_content": f.review_content.data,
-#            "agency_name": request.form.get("agency_name")
-#        }
-#        mongo.db.Reviews.insert_one(review)
-#        flash("Review Successfully Added")
-#        return redirect(url_for("get_reviews"))
-#
-#    companies = mongo.db.Agencies.find().sort("agency_name", 1)
-#    return render_template("addreview.html", companies=companies, form=f)
-
-# @app.route('/add_review', methods=["GET", "POST"])
-# def add_review():
-#     if request.method == "POST": 
-#         review = {
-#             "review_title": request.form.get("review_title"),
-#             "review_content": request.form.get("review_content"),
-#             "agency_name": request.form.get("agency_name"),
-#         }
-#         mongo.db.Reviews.insert_one(review)
-#         flash("Review Successfully Added")
-#         return redirect(url_for("get_reviews"))
-
-#     companies = mongo.db.Agencies.find().sort("agency_name", 1)
-#     return render_template("addreview.html", companies=companies)
-
 @app.route('/add_review', methods=["GET", "POST"])
 def add_review():
-    if request.method == "POST":
-        formatted_agency_name = request.form.get("agency_name").split(', ')[0]  # Get just the name, ignore the location
-        company = mongo.db.Agencies.find_one({"agency_name": formatted_agency_name})   # Load the company from the name (also making sure it exists)
+    if request.method == "POST": 
         review = {
             "review_title": request.form.get("review_title"),
             "review_content": request.form.get("review_content"),
-            "agency": ObjectId(company["_id"]),
+            "agency_name": request.form.get("agency_name"),
         }
         mongo.db.Reviews.insert_one(review)
         flash("Review Successfully Added")
         return redirect(url_for("get_reviews"))
+
     companies = mongo.db.Agencies.find().sort("agency_name", 1)
     return render_template("addreview.html", companies=companies)
+
+
 
 #editing reviews:
 
@@ -144,7 +114,6 @@ def remove_company(agency_id):
     return render_template("companylist.html",agencies=mongo.db.Agencies.find())
 
 
-
 #company list:
 
 @app.route('/company_list')
@@ -159,12 +128,6 @@ def company_profile(agency):
     location = agency.split(', ')[1]
     reviews = mongo.db.Reviews.find({"agency_name": agency})
     return render_template("companyprofile.html", reviews=reviews, name=name, location=location)
-
-@app.route('/company_profile1/<agency_id>')
-def company_profile1(agency_id):
-    company = mongo.db.Agencies.find_one({"_id": ObjectId(agency_id)})
-    reviews = mongo.db.Reviews.find({"agency_name": company['agency_name']})
-    return render_template("companyprofile.html", company=company, name=company['agency_name'], location=company['agency_location'], reviews=reviews)
 
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),

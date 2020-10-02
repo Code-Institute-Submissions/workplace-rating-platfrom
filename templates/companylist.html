@@ -17,38 +17,14 @@
           <li><a href="{{ url_for('edit_company', agency_id=agency._id) }}">Edit</a></li>
           <li><a href="{{ url_for('remove_company', agency_id=agency._id) }}">Remove</a></li>
         </ul>
-        <!-- Modal for editing a company-->
-        <!-- <div id="modal1" class="modal">
-          <div class="modal-content">
-            <div class="x-button"><a href="#!" onClick="window.parent.location.reload();"
-                class="modal-close waves-effect waves-green btn-flat">X</a>
-            </div>
-            <div class="row">
-              <div class="col sm4"></div>
-              <div class="col sm4">
-                <h4 style="text-align: center !important">Edit company details</h4>
-              </div>
-              <div class="col sm4"></div>
-            </div>
-            <br>
-            <iframe width="750" height="250" src="#" frameborder="0"
-              allowfullscreen></iframe>
-          </div>
 
-        </div> -->
-
-        <!--  -->
         <ul>
           <li><i class="material-icons">location_on</i> {{agency.agency_location}}</li>
           <br>
-          <li><i class="material-icons">mood</i> Postiive reviews:#</li>
-          <br>
-          <li><i class="material-icons">mood_bad</i> Negative reviews:#</li>
         </ul>
       </div>
       <div class="card-action">
-        <a href="{{ url_for('company_profile1', agency_id=agency._id) }}">See more</a>
-        <a href="#">Add a new review</a>
+
       </div>
     </div>
   </div>
